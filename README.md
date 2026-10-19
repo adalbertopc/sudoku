@@ -16,6 +16,7 @@
 - **Highlight duplicates**, show mistakes against the solution, highlight matching numbers and the selected row/column/box.
 - Timer with pause (auto-pauses when you switch tabs), personal best times.
 - Progress saved automatically in `localStorage`.
+- **Share your result** when you solve a puzzle: native share sheet with a generated image card (solved grid, time, mistakes, hints), post on X, copy text or download the image.
 - Full keyboard support, mobile friendly, dark mode.
 
 ### Print

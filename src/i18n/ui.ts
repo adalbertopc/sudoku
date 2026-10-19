@@ -80,6 +80,23 @@ const es = {
       `En ${unit === "row" ? "esta fila" : unit === "col" ? "esta columna" : "este bloque"}, el ${v} solo puede ir en esta celda.`,
     hintReveal: (v: string) => `No hay un paso simple disponible; revelé un ${v} en esta celda.`,
   },
+  share: {
+    share: "Compartir logro",
+    shortShare: "Compartir",
+    postX: "Publicar en X",
+    copy: "Copiar texto",
+    copied: "¡Copiado!",
+    image: "Imagen",
+    imageTitle: "¡Sudoku resuelto!",
+    playAt: "Juega gratis en",
+    text: (size: number, difficulty: string, time: string, mistakes: number, hints: number) =>
+      [
+        `🧩 Resolví un sudoku ${size}×${size} ${difficulty} en ${time}`,
+        `${mistakes === 0 ? "✅ Sin errores" : `❌ ${mistakes} ${mistakes === 1 ? "error" : "errores"}`} · ${hints === 0 ? "🧠 Sin pistas" : `💡 ${hints} ${hints === 1 ? "pista" : "pistas"}`}`,
+        "¿Puedes superarlo?",
+      ].join("\n"),
+    filename: "sudoku-resuelto.png",
+  },
   print: {
     title: "Imprimir sudokus",
     description: "Genera hojas en blanco y negro listas para imprimir, con soluciones al final.",
@@ -172,6 +189,23 @@ const en: Dictionary = {
     hintNaked: (v) => `${v} is the only possible candidate for this cell.`,
     hintHidden: (v, unit) => `In this ${unit === "row" ? "row" : unit === "col" ? "column" : "box"}, ${v} can only go in this cell.`,
     hintReveal: (v) => `No simple step available; revealed a ${v} in this cell.`,
+  },
+  share: {
+    share: "Share result",
+    shortShare: "Share",
+    postX: "Post on X",
+    copy: "Copy text",
+    copied: "Copied!",
+    image: "Image",
+    imageTitle: "Sudoku solved!",
+    playAt: "Play free at",
+    text: (size, difficulty, time, mistakes, hints) =>
+      [
+        `🧩 I solved a ${size}×${size} ${difficulty} sudoku in ${time}`,
+        `${mistakes === 0 ? "✅ No mistakes" : `❌ ${mistakes} ${mistakes === 1 ? "mistake" : "mistakes"}`} · ${hints === 0 ? "🧠 No hints" : `💡 ${hints} ${hints === 1 ? "hint" : "hints"}`}`,
+        "Can you beat it?",
+      ].join("\n"),
+    filename: "sudoku-solved.png",
   },
   print: {
     title: "Print sudokus",

@@ -50,7 +50,9 @@ import {
 import { Board, type BoardSettings } from "./Board"
 import { NumberPad } from "./NumberPad"
 import { DifficultySelect, SizeSelect } from "./OptionSelect"
-import { getT, type Dictionary, type Lang } from "@/i18n/ui"
+import { getT, ROUTES, type Dictionary, type Lang } from "@/i18n/ui"
+import type { ShareResult } from "@/lib/share"
+import { ShareActions } from "./ShareActions"
 
 interface Settings extends BoardSettings {
   autoRemoveNotes: boolean
@@ -322,6 +324,19 @@ export default function SudokuGame({ lang }: { lang: Lang }) {
   const total = game ? game.size * game.size : 1
   const givens = game ? game.givens.filter(Boolean).length : 0
   const progress = game ? Math.round(((filled - givens) / Math.max(1, total - givens)) * 100) : 0
+  const shareResult: ShareResult | null =
+    game?.completed && typeof window !== "undefined"
+      ? {
+          size: game.size,
+          difficultyLabel: t.difficulty[game.difficulty],
+          time: formatTime(game.elapsed),
+          mistakes: game.mistakes,
+          hints: game.hints,
+          givens: game.givens,
+          solution: game.solution,
+          url: new URL(ROUTES[lang].play, window.location.origin).href,
+        }
+      : null
 
   return (
     <div className="mx-auto grid w-full max-w-6xl gap-6 px-4 pt-4 pb-6 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-10 lg:pt-6 lg:pb-10">
@@ -423,9 +438,12 @@ export default function SudokuGame({ lang }: { lang: Lang }) {
             <div className="flex items-center gap-2 rounded-lg border bg-muted/50 px-3 py-2 text-sm">
               <Trophy className="size-4" />
               {t.game.solvedIn(formatTime(game.elapsed))}
-              <Button variant="link" size="sm" className="ml-auto h-auto p-0" onClick={openNewGame}>
-                {t.game.playAnother}
-              </Button>
+              <span className="ml-auto flex items-center gap-4">
+                {shareResult && <ShareActions result={shareResult} t={t} compact />}
+                <Button variant="link" size="sm" className="h-auto p-0" onClick={openNewGame}>
+                  {t.game.playAnother}
+                </Button>
+              </span>
             </div>
           ) : (
             game && (
@@ -617,9 +635,11 @@ export default function SudokuGame({ lang }: { lang: Lang }) {
               {result.isBest ? t.game.newRecord : t.game.yourBest(formatTime(result.best))}
             </p>
           )}
+          {shareResult && <ShareActions result={shareResult} t={t} />}
           <DialogFooter>
             <DialogClose render={<Button variant="outline" />}>{t.game.viewBoard}</DialogClose>
             <Button
+              variant="outline"
               onClick={() => {
                 setResult(null)
                 openNewGame()
