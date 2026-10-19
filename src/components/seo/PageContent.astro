@@ -1,0 +1,67 @@
+---
+import { CONTENT } from "@/i18n/content"
+import { ROUTES, type Lang, type PageKey } from "@/i18n/ui"
+
+interface Props {
+  lang: Lang
+  page: PageKey
+}
+
+const { lang, page } = Astro.props
+const c = CONTENT[lang][page]
+const crossHref = ROUTES[lang][page === "play" ? "print" : "play"]
+---
+
+<section class="border-t bg-muted/30 print:hidden">
+  <div class="mx-auto grid max-w-6xl gap-10 px-4 py-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] lg:gap-16 lg:py-16">
+    <article class="grid gap-10">
+      {
+        c.sections.map((s) => (
+          <section class="grid gap-3">
+            <h2 class="text-xl font-semibold tracking-tight">{s.title}</h2>
+            {s.paragraphs?.map((p) => (
+              <p class="leading-relaxed text-muted-foreground">{p}</p>
+            ))}
+            {s.items && (
+              <dl class="grid gap-3 sm:grid-cols-2">
+                {s.items.map((i) => (
+                  <div class="rounded-lg border bg-card p-4">
+                    <dt class="font-medium">{i.term}</dt>
+                    <dd class="mt-1 text-sm leading-relaxed text-muted-foreground">{i.text}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+            {s.list && (
+              <ul class="grid list-disc gap-1.5 pl-5 leading-relaxed text-muted-foreground marker:text-foreground/40">
+                {s.list.map((l) => (
+                  <li>{l}</li>
+                ))}
+              </ul>
+            )}
+          </section>
+        ))
+      }
+    </article>
+    <aside class="grid content-start gap-6">
+      <section class="grid gap-4">
+        <h2 class="text-xl font-semibold tracking-tight">{c.faqTitle}</h2>
+        {
+          c.faq.map((f) => (
+            <details class="group rounded-lg border bg-card px-4 py-3 [&_summary::-webkit-details-marker]:hidden">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-3 font-medium">
+                {f.q}
+                <span class="text-muted-foreground transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+              </summary>
+              <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
+            </details>
+          ))
+        }
+      </section>
+      <p class="rounded-lg border bg-card p-4 text-sm">
+        {c.crossLink.text}{" "}
+        <a href={crossHref} class="font-medium underline underline-offset-4 hover:text-foreground">{c.crossLink.label}</a>
+      </p>
+    </aside>
+  </div>
+</section>

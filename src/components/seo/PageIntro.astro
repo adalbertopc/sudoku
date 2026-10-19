@@ -1,0 +1,17 @@
+---
+import { CONTENT } from "@/i18n/content"
+import type { Lang, PageKey } from "@/i18n/ui"
+
+interface Props {
+  lang: Lang
+  page: PageKey
+}
+
+const { lang, page } = Astro.props
+const c = CONTENT[lang][page]
+---
+
+<div class:list={["mx-auto w-full px-4 pt-6 print:hidden lg:pt-8", page === "play" ? "max-w-6xl" : "max-w-7xl"]}>
+  <h1 class="text-2xl font-semibold tracking-tight sm:text-3xl">{c.h1}</h1>
+  <p class="mt-1.5 max-w-2xl text-sm text-muted-foreground sm:text-base">{c.lead}</p>
+</div>

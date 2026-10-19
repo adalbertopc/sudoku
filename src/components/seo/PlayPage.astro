@@ -1,0 +1,27 @@
+---
+import Layout from "@/layouts/Layout.astro"
+import SudokuGame from "@/components/sudoku/SudokuGame"
+import PageIntro from "./PageIntro.astro"
+import PageContent from "./PageContent.astro"
+import type { Lang } from "@/i18n/ui"
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+---
+
+<Layout lang={lang} page="play">
+  <PageIntro lang={lang} page="play" />
+  <SudokuGame client:only="react" lang={lang}>
+    <div slot="fallback" class="mx-auto grid w-full max-w-6xl gap-6 px-4 pt-4 pb-6 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-10 lg:pt-6 lg:pb-10">
+      <div class="flex flex-col items-center gap-3">
+        <div class="h-7 w-full" style="max-width: min(100%, calc(100dvh - 15rem))"></div>
+        <div class="aspect-square w-full animate-pulse rounded-lg border-[3px] border-foreground/15 bg-muted/50" style="max-width: min(100%, calc(100dvh - 15rem))"></div>
+      </div>
+      <div class="hidden h-[34rem] animate-pulse rounded-xl bg-muted/40 lg:block"></div>
+    </div>
+  </SudokuGame>
+  <PageContent lang={lang} page="play" />
+</Layout>

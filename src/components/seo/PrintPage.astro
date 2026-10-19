@@ -1,0 +1,24 @@
+---
+import Layout from "@/layouts/Layout.astro"
+import PrintStudio from "@/components/print/PrintStudio"
+import PageIntro from "./PageIntro.astro"
+import PageContent from "./PageContent.astro"
+import type { Lang } from "@/i18n/ui"
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+---
+
+<Layout lang={lang} page="print">
+  <PageIntro lang={lang} page="print" />
+  <PrintStudio client:only="react" lang={lang}>
+    <div slot="fallback" class="mx-auto grid w-full max-w-7xl gap-6 px-4 pt-4 pb-6 lg:grid-cols-[340px_minmax(0,1fr)] lg:gap-10 lg:pt-6 lg:pb-10">
+      <div class="h-[36rem] animate-pulse rounded-xl bg-muted/40"></div>
+      <div class="hidden aspect-[8.5/11] max-w-[816px] animate-pulse rounded-sm bg-muted/40 lg:block"></div>
+    </div>
+  </PrintStudio>
+  <PageContent lang={lang} page="print" />
+</Layout>
