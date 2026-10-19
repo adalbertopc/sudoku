@@ -68,12 +68,24 @@ npm run dev
 | `npm run check` | Type-check the project |
 | `npm run bench` | Benchmark generation and verify uniqueness for every size and difficulty |
 | `npm run verify` | Check that the logic solver never eliminates a correct value |
+| `npm run deploy` | Build and deploy to Cloudflare Workers (static assets) |
 
 The production URL defaults to `https://sudoku.adal.dev`. Override it with `SITE_URL` when building for another domain:
 
 ```sh
 SITE_URL=https://your-domain.com npm run build
 ```
+
+## Deployment
+
+The site is deployed to **Cloudflare Workers** as static assets ([`wrangler.jsonc`](wrangler.jsonc)) with `sudoku.adal.dev` as a custom domain. [`public/_headers`](public/_headers) sets long-lived caching for hashed assets and basic security headers.
+
+```sh
+npx wrangler login
+npm run deploy
+```
+
+To deploy under your own domain, change `routes` in `wrangler.jsonc` and build with `SITE_URL`.
 
 ## SEO
 

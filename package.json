@@ -29,7 +29,8 @@
     "astro": "astro",
     "check": "astro check",
     "bench": "tsx scripts/bench.ts",
-    "verify": "tsx scripts/verify-logic.ts"
+    "verify": "tsx scripts/verify-logic.ts",
+    "deploy": "astro build && wrangler deploy"
   },
   "dependencies": {
     "@astrojs/react": "^7.1.0",
@@ -53,6 +54,7 @@
     "@astrojs/check": "^0.9.10",
     "@types/node": "^26.6.5",
     "tsx": "^4.23.15",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "wrangler": "^4.151.1"
   }
 }
