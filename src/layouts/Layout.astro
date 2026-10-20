@@ -111,6 +111,10 @@ const jsonLd = JSON.stringify({ "@context": "https://schema.org", "@graph": grap
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Sudoku" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE_NAME[lang]} />
@@ -236,6 +240,10 @@ const jsonLd = JSON.stringify({ "@context": "https://schema.org", "@graph": grap
           localStorage.setItem("sudoku:theme", dark ? "dark" : "light")
         } catch {}
       })
+
+      if (import.meta.env.PROD && "serviceWorker" in navigator) {
+        addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}))
+      }
     </script>
   </body>
 </html>
