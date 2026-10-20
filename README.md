@@ -94,7 +94,11 @@ To deploy under your own domain, change `routes` in `wrangler.jsonc` and build w
 - Canonical + `hreflang` (es, en, x-default) on every page and in the sitemap.
 - Open Graph and Twitter cards with a localized image per language.
 - JSON-LD: `WebSite`, `WebApplication`, `WebPage`, `BreadcrumbList`.
-- `sitemap-index.xml`, `robots.txt`, `llms.txt` and a web manifest.
+- `sitemap-index.xml`, `robots.txt` and `llms.txt`.
+
+## PWA
+
+The site is installable and works offline. [`public/site.webmanifest`](public/site.webmanifest) describes the app, and [`integrations/service-worker.mjs`](integrations/service-worker.mjs) writes `dist/sw.js` after each build with every page and hashed asset precached. Pages are network-first (new deploys show up immediately) and fall back to the cache offline; assets are cache-first. The cache name is a hash of the build output, so each deploy replaces the previous cache. The worker is only registered in production builds, so test it with `npm run build && npm run preview`.
 
 ## Project structure
 
