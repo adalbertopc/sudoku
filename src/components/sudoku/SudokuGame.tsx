@@ -231,6 +231,12 @@ export default function SudokuGame({ lang }: { lang: Lang }) {
     if (interactive) dispatch({ type: "hint", index: selected, autoRemoveNotes: settings.autoRemoveNotes })
   }, [interactive, selected, settings.autoRemoveNotes])
 
+  // Tapping a cell while paused resumes the game, so the board never feels stuck after returning to the app.
+  const selectCell = useCallback((index: number) => {
+    setPaused(false)
+    setSelected(index)
+  }, [])
+
   const anyDialogOpen = newOpen || restartOpen || !!result
 
   useEffect(() => {
@@ -397,13 +403,18 @@ export default function SudokuGame({ lang }: { lang: Lang }) {
               settings={settings}
               hidden={paused || generating}
               labels={t.board}
-              onSelect={setSelected}
+              onSelect={selectCell}
             />
           ) : (
             <div className="aspect-square w-full rounded-lg border-[3px] border-foreground/20 bg-muted/40" />
           )}
           {(generating || (paused && game && !game.completed)) && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-lg bg-background/70 backdrop-blur-sm">
+            <div
+              className={cn(
+                "absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-lg bg-background/70 backdrop-blur-sm",
+                !generating && "pointer-events-none",
+              )}
+            >
               {generating ? (
                 <>
                   <Loader2 className="size-7 animate-spin text-muted-foreground" />
@@ -412,7 +423,7 @@ export default function SudokuGame({ lang }: { lang: Lang }) {
               ) : (
                 <>
                   <p className="text-lg font-medium">{t.game.paused}</p>
-                  <Button onClick={() => setPaused(false)}>
+                  <Button className="pointer-events-auto" onClick={() => setPaused(false)}>
                     <Play data-icon="inline-start" />
                     {t.game.resume}
                   </Button>
